@@ -1,9 +1,9 @@
 import streamlit as st
-import plotly
+
 import pandas as pd
 import numpy as np
 import altair as alt
-import plotly.express as px
+
 
 
 #Title sirve para mostrar un titulo con un texto como parámetro
