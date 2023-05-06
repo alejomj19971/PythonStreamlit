@@ -1,0 +1,28 @@
+fig = px.bar(df, x='Year', y='Price')
+
+datos = {
+    'Precio': df_filtrado2['Price'],
+         'Año': df_filtrado2['Year']}
+df2 = pd.DataFrame(datos)
+
+fig = px.bar(df2, x='Año', y='Precio')
+
+st.plotly_chart(fig)
+
+
+st.title('Vehículos por  puestos y color exterior')
+pasajeros = st.selectbox('PASAJEROS',(df["Passengers"].sort_values(ascending=True).unique()))  
+colorExterior = st.selectbox('COLOR',(df["Exterior_Colour"].sort_values(ascending=True).unique())) 
+
+filtroBarras3 =(df['Passengers']==pasajeros) & (df['Exterior_Colour']==colorExterior)  
+df_filtrado3 = df.loc[filtroBarras3] 
+df_filtrado3 = df_filtrado3.loc[:,['Passengers','Exterior_Colour']]   
+
+datos = {
+    'Pasajeros':df_filtrado3['Passengers'],
+    'Color': df_filtrado3['Exterior_Colour']}
+df3 = pd.DataFrame(datos)
+
+fig = px.bar(df3, x='Pasajeros', y='Color', orientation='h')
+
+st.plotly_chart(fig)

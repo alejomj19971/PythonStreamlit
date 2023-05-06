@@ -23,7 +23,10 @@ marca = st.selectbox('MARCA',(df["Make"].sort_values(ascending=True).unique()))
 puertas = st.selectbox('PUERTAS',(df["Doors"].sort_values(ascending=True).unique()))  
 transmsion = st.selectbox('TRANSMISIÓN',(df["Transmission"].sort_values(ascending=True).unique()))  
 año = st.selectbox('AÑO MÍNIMO',(df["Year"].sort_values(ascending=True).unique()))  
-año2 = st.selectbox('AÑO MÁXIMO',(df["Year"].sort_values(ascending=True).unique())) 
+año2 = st.selectbox('AÑO MÁXIMO',(df["Year"].sort_values(ascending=True).unique()))
+pasajeros = st.selectbox('PAASAJEROS',(df["Passengers"].sort_values(ascending=True).unique()))
+color = st.selectbox('COLOR',(df["Exterior_Colour"].sort_values(ascending=True).unique()))
+
 
 
 #Filtro de barras el loc devuelve un nuevo dataframe con los datos filtrados
@@ -32,46 +35,29 @@ df_filtrado = df.loc[filtroBarras]
 df_filtrado = df_filtrado.loc[:,['Price','Make']]    
 
 
-st.title("Automoviles Usados Por Precio y Marca" )
+st.title("Automoviles Usados Por Precio,Marca,Puertas y Transmisión" )
 
 st.bar_chart(df_filtrado.set_index('Price'))
 
 
 st.title("Automoviles Usados Por Precio y Año" )
  
-
-filtroBarras2 = ((df['Year']>=año)&(df['Year']<=año2)) & ((df['Price'] >= precio)&(df['Price'] <= precio2))  
+filtroBarras2 = (df['Price'] >= precio) &(df['Price']<=precio2) & ((df['Year']>=año) & (df['Year']<=año2))
 df_filtrado2 = df.loc[filtroBarras2] 
-df_filtrado2 = df_filtrado2.loc[:,['Year','Price']]   
+df_filtrado2 = df_filtrado2.loc[:,['Price','Year']]   
 
+st.bar_chart(df_filtrado2.set_index('Year'))
 
-
-fig = px.bar(df, x='Year', y='Price')
-
-datos = {
-    'Precio': df_filtrado2['Price'],
-         'Año': df_filtrado2['Year']}
-df2 = pd.DataFrame(datos)
-
-fig = px.bar(df2, x='Año', y='Precio')
-
-st.plotly_chart(fig)
-
-
-st.title('Vehículos por  puestos y color exterior')
-pasajeros = st.selectbox('PASAJEROS',(df["Passengers"].sort_values(ascending=True).unique()))  
-colorExterior = st.selectbox('COLOR',(df["Exterior_Colour"].sort_values(ascending=True).unique())) 
-
-filtroBarras3 =(df['Passengers']==pasajeros) & (df['Exterior_Colour']==colorExterior)  
+st.title("Automoviles Usados Por Cantidad de Puertas y Color" )
+ 
+filtroBarras3 = (df['Doors'] == puertas) &(df['Exterior_Colour']==color)
 df_filtrado3 = df.loc[filtroBarras3] 
-df_filtrado3 = df_filtrado3.loc[:,['Passengers','Exterior_Colour']]   
+df_filtrado3 = df_filtrado3.loc[:,['Make','Price']]   
 
-datos = {
-    'Pasajeros':df_filtrado3['Passengers'],
-    'Color': df_filtrado3['Exterior_Colour']}
-df3 = pd.DataFrame(datos)
+st.bar_chart(df_filtrado3.set_index('Price'))
 
-fig = px.bar(df3, x='Pasajeros', y='Color', orientation='h')
 
-st.plotly_chart(fig)
+
+
+
 
